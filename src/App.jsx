@@ -1,35 +1,39 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useContext } from 'react';
+import Item from './components/Item';
+import Cart from './components/Cart';
+import { CartContext} from './contexts/CartContext';
+import {BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom';
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const cart = useContext(CartContext);
+  const totalCartCount = cart.items.length;
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+  return (   
+    <Router>
+      <div className="App">
+        {/* Navigation Links */}
+        <nav className="navbar">
+          <Link to="/" className="nav-link">Home</Link>
+          <Link to="/cart" className="nav-link">Cart({totalCartCount})</Link>
+        </nav>
+        
+        <h1>Shopping Cart App with Context API</h1>
+        {/* Routes */}
+        <Routes>
+          <Route path ="/" element ={<div className="item-list">
+                <Item name="MacBook" price={20000} />
+                <Item name="Pen Drive" price={400} />
+                <Item name="Mobile" price={1500} />
+              </div>} />
+         <Route path="/cart" element ={<Cart/>} />
+
+        </Routes>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </Router>
+   
   )
+  
 }
 
 export default App
